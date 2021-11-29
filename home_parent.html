@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<style>
+    div.addTask{
+        visibility: hidden;
+    }
+    div.addSched{
+        visibility: hidden;
+    }
+</style>
+<body onload = "welcome()">
+<h1>Kira</h1>
+<div>
+    <p id = "hello"></p>
+</div>
+<div>
+    <h2>Tasks</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Points</th>
+                <th>Child</th>
+              </tr>
+        </thead>
+        <tbody id="task_body">
+        </tbody>
+      </table>
+</div>
+
+<div>
+    <button onclick="clearTasks()">Clear Tasks</button>
+</div>
+<div>
+    <button onClick= "createNewTask()">Create Task</button>
+</div>
+<div class = "addTask">
+    <form action="/action_page.php">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" ><br>
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" ><br><br>
+        <label for="points">Points:</label><br>
+        <input type="number" id="points" name="points" ><br>
+        <label for="child">Child:</label><br>
+        <input type="text" id="child" name="child" ><br>
+      </form>
+      <button onClick = "submitnewTask()">Submit</button> 
+
+</div>
+<div>
+    <h2>Weekly Schedule</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Task</th>
+                <th>Points</th>
+                <th>Child</th>
+                <th>Progress</th>
+              </tr>
+        </thead>
+        <tbody id="schedule_body">
+        </tbody>
+      </table>
+</div>
+<div>
+    <button onClick= "addTasktoSchedule()">Add A Task</button>
+</div>
+<div class = "addSched">
+    <form action="/action_page.php">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name" ><br>
+        <label for="description">Description:</label><br>
+        <input type="text" id="description" name="description" ><br><br>
+        <label for="points">Points:</label><br>
+        <input type="number" id="points" name="points" ><br>
+        <label for="child">Child:</label><br>
+        <input type="text" id="child" name="child" ><br>
+      </form>
+      <button onClick = "submitnewTask()">Submit</button> 
+
+</div>
+
+</body>
+</html>
+<script>
+    class Task{
+        constructor(n, d, p, c) {
+            this.name = n;
+            this.description = d;
+            this.points = p;
+            this.child = c;
+        }
+    }
+    let username = window.localStorage.getItem("parent_username");
+    function welcome() {
+        let d = new Date();
+        let day = d.getDay();
+        let h = d.getHours();
+        let m = d.getMinutes();
+        if(day == 6 && hours == 23 && getMinutes == 59)
+        {
+            window.localStorage.removeItem("schedule");
+        }
+        document.getElementById("hello").innerHTML = "Hello " + username;
+        const table = document.getElementById("task_body");
+        let tasks = JSON.parse(window.localStorage.getItem("tasks"));
+        console.log(tasks);
+        if(tasks != null)
+        {
+            let length = tasks.length;
+            for(let i=0; i< length; i++)
+            {
+                let task = tasks[i];
+                let row = table.insertRow();
+                let name = row.insertCell(0);
+                name.innerHTML = task.name;
+                let description = row.insertCell(1);
+                description.innerHTML = task.description;
+                let points = row.insertCell(2);
+                points.innerHTML = task.points;
+                let child = row.insertCell(3);
+                child.innerHTML = task.child;
+            }
+        }
+    }
+    function createNewTask() {
+        document.getElementsByClassName("addTask")[0].style.visibility = "visible";
+    }
+    function addTasktoSchedule() {
+        document.getElementByClassName("addSched")[0].style.visibility = "visible";
+    }
+    function clearTasks() {
+        window.localStorage.removeItem("tasks");
+    }
+
+    function submitnewTask() {
+        let n = document.getElementById("name").value;
+        console.log(n);
+        let d = document.getElementById("description").value;
+        let p = document.getElementById("points").value;
+        let c = document.getElementById("child").value;
+        const t = new Task(n,d,p,c);
+        let all_tasks = JSON.parse(window.localStorage.getItem("tasks"));
+        if(all_tasks == null){
+            all_tasks = []
+            let new_length = all_tasks.push(t);
+        }
+        else {
+            let new_length = all_tasks.push(t);
+        }
+        window.localStorage.setItem("tasks", JSON.stringify(all_tasks));
+        const table = document.getElementById("task_body");
+        let row = table.insertRow();
+        let name = row.insertCell(0);
+        name.innerHTML = n;
+        let description = row.insertCell(1);
+        description.innerHTML = d;
+        let points = row.insertCell(2);
+        points.innerHTML = p;
+        let child = row.insertCell(3);
+        child.innerHTML = c;
+        document.getElementsByClassName("addTask")[0].style.visibility = "hidden";
+    }
+</script>
