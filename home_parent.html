@@ -21,7 +21,6 @@
                 <th>Name</th>
                 <th>Description</th>
                 <th>Points</th>
-                <th>Child</th>
               </tr>
         </thead>
         <tbody id="task_body">
@@ -30,7 +29,7 @@
 </div>
 
 <div>
-    <button onclick="clearTasks()">Clear Tasks</button>
+    <button onclick="clearTasks()">Clear Tasks</button><button onclick="clearSchedule()">Clear Schedule</button>
 </div>
 <div>
     <button onClick= "createNewTask()">Create Task</button>
@@ -43,8 +42,6 @@
         <input type="text" id="description" name="description" ><br><br>
         <label for="points">Points:</label><br>
         <input type="number" id="points" name="points" ><br>
-        <label for="child">Child:</label><br>
-        <input type="text" id="child" name="child" ><br>
       </form>
       <button onClick = "submitnewTask()">Submit</button> 
 
@@ -68,17 +65,13 @@
     <button onClick= "addTasktoSchedule()">Add A Task</button>
 </div>
 <div class = "addSched">
-    <form action="/action_page.php">
-        <label for="name">Name:</label><br>
-        <input type="text" id="name" name="name" ><br>
-        <label for="description">Description:</label><br>
-        <input type="text" id="description" name="description" ><br><br>
-        <label for="points">Points:</label><br>
-        <input type="number" id="points" name="points" ><br>
-        <label for="child">Child:</label><br>
-        <input type="text" id="child" name="child" ><br>
-      </form>
-      <button onClick = "submitnewTask()">Submit</button> 
+    <label for="tasks">Choose a task:</label>
+    <select name="task" id="task">
+    </select>
+    <label for="child">Assign a child:</label>
+    <select name="child" id="child">
+    </select>
+    <button onclick = "submitTaskToSched()">Add Task To Schedule</button> 
 
 </div>
 
@@ -86,14 +79,28 @@
 </html>
 <script>
     class Task{
-        constructor(n, d, p, c) {
+        constructor(n, d, p) {
             this.name = n;
             this.description = d;
             this.points = p;
-            this.child = c;
         }
     }
+    class Child{
+        constructor(n, p) {
+            this.username = n;
+            this.password = p;
+        }
+    }
+    class ScheduleItem{
+        constructor(task, child) {
+            this.task = task;
+            this.child = child;
+            this.progress = false;
+        }
+    }
+
     let username = window.localStorage.getItem("parent_username");
+
     function welcome() {
         let d = new Date();
         let day = d.getDay();
@@ -101,12 +108,12 @@
         let m = d.getMinutes();
         if(day == 6 && hours == 23 && getMinutes == 59)
         {
-            window.localStorage.removeItem("schedule");
+            //window.localStorage.removeItem("schedule");
         }
         document.getElementById("hello").innerHTML = "Hello " + username;
+
         const table = document.getElementById("task_body");
         let tasks = JSON.parse(window.localStorage.getItem("tasks"));
-        console.log(tasks);
         if(tasks != null)
         {
             let length = tasks.length;
@@ -120,8 +127,42 @@
                 description.innerHTML = task.description;
                 let points = row.insertCell(2);
                 points.innerHTML = task.points;
-                let child = row.insertCell(3);
-                child.innerHTML = task.child;
+            }
+        }
+
+
+        const table2 = document.getElementById("schedule_body");
+        let schedule = JSON.parse(window.localStorage.getItem("schedule"));
+        console.log(schedule);
+        if(schedule != null)
+        {
+            let length = schedule.length;
+            for(let i=0; i< length; i++)
+            {
+                let item = schedule[i];
+                let row = table2.insertRow();
+                let task = row.insertCell(0);
+                task.innerHTML = item.task;
+                let points = row.insertCell(1);
+                for(let j=0; j< tasks.length; j++)
+                {
+                       if(tasks[j].name == task)
+                       {
+                        points.innerHTML = tasks[j].points;
+                        break;
+                       }
+                }
+                let child = row.insertCell(2);
+                child.innerHTML = item.child;
+                let progress = row.insertCell(3);
+                if(item.progress)
+                {  
+                    progress.innerHTML = "Complete";
+                }
+                else
+                {
+                    progress.innerHTML = "Not Complete";
+                }
             }
         }
     }
@@ -129,19 +170,87 @@
         document.getElementsByClassName("addTask")[0].style.visibility = "visible";
     }
     function addTasktoSchedule() {
-        document.getElementByClassName("addSched")[0].style.visibility = "visible";
+        document.getElementsByClassName("addSched")[0].style.visibility = "visible";
+        var x = document.getElementById("task");
+        let tasks = JSON.parse(window.localStorage.getItem("tasks"));
+        if(tasks != null)
+        {
+            let length = tasks.length;
+            for(let i=0; i< length; i++)
+            {
+                task = tasks[i];
+                var opt = document.createElement("option");
+                opt.text = task.name;
+                opt.value = task.name;
+                x.add(opt);
+            }
+        }
+        var y = document.getElementById("child");
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        if(children != null)
+        {
+            let length = children.length;
+            for(let i=0; i< length; i++)
+            {
+                child = children[i];
+                var opt = document.createElement("option");
+                opt.text = child.username;
+                opt.value = child.username;
+                y.add(opt);
+            }
+        }
     }
+
+    function submitTaskToSched() {
+        let t = document.getElementById("task").value;
+        let c = document.getElementById("child").value;
+        const item = new ScheduleItem(t,c);
+        let schedule = JSON.parse(window.localStorage.getItem("schedule"));
+        let tasks = JSON.parse(window.localStorage.getItem("tasks"));
+        if(schedule == null)
+        {
+            schedule = [];
+            let new_length = schedule.push(item);
+        }
+        else
+        {
+            let new_length = schedule.push(item);
+        }
+        console.log(schedule);
+        window.localStorage.setItem("schedule", JSON.stringify(schedule));
+        console.log(JSON.parse(window.localStorage.getItem("schedule")));
+        document.getElementsByClassName("addSched")[0].style.visibility = "hidden";
+        const table2 = document.getElementById("schedule_body");
+        let row = table2.insertRow();
+        let task = row.insertCell(0);
+        task.innerHTML = t;
+        let points = row.insertCell(1);
+        for(let j=0; j< tasks.length; j++)
+        {
+            if(tasks[j].name == task)
+            {
+            points.innerHTML = tasks[j].points;
+            break;
+            }
+        }
+        let child = row.insertCell(2);
+        child.innerHTML = c;
+        let progress = row.insertCell(3);
+        progress.innerHTML = "Not Complete";
+    }
+
     function clearTasks() {
         window.localStorage.removeItem("tasks");
+    }
+    function clearSchedule() {
+        window.localStorage.removeItem("schedule");
     }
 
     function submitnewTask() {
         let n = document.getElementById("name").value;
-        console.log(n);
         let d = document.getElementById("description").value;
         let p = document.getElementById("points").value;
-        let c = document.getElementById("child").value;
-        const t = new Task(n,d,p,c);
+        const t = new Task(n,d,p);
         let all_tasks = JSON.parse(window.localStorage.getItem("tasks"));
         if(all_tasks == null){
             all_tasks = []
@@ -159,8 +268,6 @@
         description.innerHTML = d;
         let points = row.insertCell(2);
         points.innerHTML = p;
-        let child = row.insertCell(3);
-        child.innerHTML = c;
         document.getElementsByClassName("addTask")[0].style.visibility = "hidden";
     }
 </script>
