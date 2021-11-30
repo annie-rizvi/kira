@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head> 
+    <link rel="stylesheet" href="child_styles.css">
+</head>
+<body class=kids onload = "welcome()">
+    <div id="dashboard-header">
+        <div class=hello>Hi <span id="child_name">bluegirl</span>!</div>
+        <div class=points id="total_points">420</div>
+        <div class=points-subtitle>points</div>
+    </div>
+
+    <div class=section>
+        <button style="left: 0;top: 0;">tasks</button>
+        <button style="left: 124px;top: 0;">rewards</button>
+        <button style="left: 0px;top: 120px;">leader board</button>
+        <button style="left: 124px;top: 120px;">profile</button>
+    </div>
+
+    <button class=logout onclick="logout()">logout</button>
+</body>
+
+
+<script>
+    var total_points=0;
+    let child_name = window.localStorage.getItem("current_child");
+    function welcome() {
+        
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        for(let i=0; i<children.length; i++)
+        {
+            if(child_name == children[i].username)
+            {
+                total_points = Number(children[i].points);
+            }
+        }
+        document.getElementById("total_points").innerHTML = total_points;
+        document.getElementById("child_name").innerHTML = child_name;
+    }
+
+    function logout() {
+        window.localStorage.removeItem("current_child");
+        window.location.href = "sign_in_child.html";
+    }
+
+</script> 

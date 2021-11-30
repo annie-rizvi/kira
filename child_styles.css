@@ -1,0 +1,96 @@
+
+@font-face {
+    font-family: inriaSerif;
+    src: url(fonts/InriaSerif-Regular.ttf);
+}
+@font-face {
+    font-family: nanum;
+    src: url(fonts/NanumPenScript-Regular.ttf);
+}
+
+body {
+    background: #8FC7E7;
+}
+
+button {
+    border: none;
+    border-radius: 15px;
+}
+
+body, h1, h2, div, button {
+    color: #536773;
+    text-align: center;
+    font-family: nanum;
+    font-style: normal;
+    font-weight: normal;
+}
+
+#dashboard-header {
+    position: relative;
+}
+
+.hello, .points, .points-subtitle, .section, .logout {
+    position: absolute;
+    transform: translate(-50%, 0%);
+    left: 50%;
+}
+
+.hello, .points-subtitle {
+    width: 136px;
+    height: 35px;
+    font-size: 30px;
+    line-height: 37px;
+}
+
+.points, .points-subtitle, .logout {
+    color: #FFFFFF;
+}
+
+.hello {
+    top: 21px;
+    color: #000000;
+}
+
+.points {
+    top: 26px;
+    height: 61px;
+
+    font-size: 100px;
+    display: block;
+}
+
+.points-subtitle {
+    top: 100px;
+    color: #FFFFFF;
+}
+
+.section {
+    width: 233px;
+    height: 223px;
+    top: 170px;
+}
+
+.section button {
+    position: absolute;
+    width: 109px;
+    height: 103px;
+
+    background: #FFFFFF;
+
+    font-size: 35px;
+    line-height: 44px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+}
+
+.logout {
+    position: absolute;
+    background: #536773;
+    font-size: 30px;
+    line-height: 37px;
+    
+    width: 160px;
+    height: 47px;
+    left: 50%;
+    top: 460px;
+}
+

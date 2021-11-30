@@ -1,13 +1,10 @@
 /* KIRA */
 
 @font-face {
-    font-family: indieFlower;
-    src: url(fonts/IndieFlower-Regular.ttf);
-}
-@font-face {
     font-family: inriaSerif;
     src: url(fonts/InriaSerif-Regular.ttf);
 }
+
 
 body, h1, h2, input {
     color: #536773;
@@ -15,10 +12,6 @@ body, h1, h2, input {
     font-family: inriaSerif;
     font-style: normal;
     font-weight: normal;
-}
-
-.kids {
-    background: #8FC7E7;
 }
 
 h2 {
@@ -61,7 +54,7 @@ input {
 }
 
 .fun-font {
-    font-family: indieFlower;
+    font-family: nanum;
 }
 
 input[type="submit"] {
