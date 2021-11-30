@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<body onload = "welcome()">
+
+<h1>Kira</h1>
+<div>
+    <h2 id = "total_points"></h2>
+    <dialog id = "buy_alert" close>
+        <p id = "buy_text"></p>
+        <button id = "yes" onclick="takeOutPoints()">Okay</button>
+        <button id = "no" onclick="dontBuy()">Cancel</button>
+    </dialog>
+    <div>
+        <h2>Arcade</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Reward</th>
+                    <th>Points</th>
+                    <th>Icon</th>
+                    <th> </th>
+                  </tr>
+            </thead>
+            <tbody id="arcade_body">
+            </tbody>
+          </table>
+    </div>
+    <div>
+        <button onclick="clearStorage()">Clear</button>
+    </div>
+    
+</div>
+
+</body>
+</html>
+
+<script>
+    var total_points=0;
+    let child_name = window.localStorage.getItem("current_child");
+    function welcome() {
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        let rewards = JSON.parse(window.localStorage.getItem("rewards"));
+        let tasks = JSON.parse(window.localStorage.getItem("tasks"));
+        console.log(children);
+        for(let i=0; i<children.length; i++)
+        {
+            if(child_name == children[i].username)
+            {
+                total_points = 200; //Number(children[i].points);
+            }
+        }
+        console.log(total_points);
+        document.getElementById("total_points").innerHTML = "You have " + total_points + " Points!";
+        let length = rewards.length;
+        console.log(rewards);
+        const table = document.getElementById("arcade_body");
+        for(let i=0; i<length; i++)
+        {
+            let item = rewards[i];
+            let row = table.insertRow();
+            let name = row.insertCell(0);
+            name.innerHTML = item.name;
+            let points = row.insertCell(1);
+            points.innerHTML = item.points;
+            let icon = row.insertCell(2);
+            icon.innerHTML = item.icon;
+            let buy = row.insertCell(3);
+            var buybutton = document.createElement('button');
+            buybutton.onclick = "buyReward()";
+            buybutton.innerText = "Buy";
+            buybutton.addEventListener("click", buyReward, item);
+            buy.appendChild(buybutton);
+        }
+    }
+
+    function buyReward(item)
+    {
+        document.getElementById("yes").disable = false;
+        let reward_val = Number(item.path[2].childNodes[1].innerHTML);
+        document.getElementById("yes").value = reward_val;
+        let dialog = document.getElementById("buy_alert");
+        dialog.show();
+        let buy_text = document.getElementById("buy_text");
+        buy_text.innerHTML = "You are about to spend " + String(reward_val) + " points. Are you sure?";
+    }
+
+    function takeOutPoints()
+    {
+       let points = Number(document.getElementById("yes").value);
+       console.log(points);
+       if(total_points < points)
+       {
+            let buy_text = document.getElementById("buy_text");
+            buy_text.innerHTML = "You do not have enough points to buy this reward."
+            document.getElementById("yes").disable = true;
+       }
+       else
+       {
+           total_points-=points;
+           let children = JSON.parse(window.localStorage.getItem("children"));
+           for(let i=0; i<children.length; i++)
+            {
+                if(child_name == children[i].username)
+                {
+                    children[i].points = total_points;
+                }
+            }
+            window.localStorage.setItem("children", JSON.stringify(children));
+            document.getElementById("total_points").innerHTML = "You have " + total_points + " Points!";
+            let dialog = document.getElementById("buy_alert");
+            dialog.close();
+
+       }
+       
+
+    }
+
+    function dontBuy()
+    {
+        let dialog = document.getElementById("buy_alert");
+        dialog.close();
+    }
+
+</script>
