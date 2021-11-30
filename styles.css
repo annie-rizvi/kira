@@ -1,0 +1,65 @@
+/* KIRA */
+
+@font-face {
+    font-family: indieFlower;
+    src: url(fonts/IndieFlower-Regular.ttf);
+}
+@font-face {
+    font-family: inriaSerif;
+    src: url(fonts/InriaSerif-Regular.ttf);
+}
+
+.kira {
+    text-align: center;
+
+    font-family: inriaSerif;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 80px;
+    line-height: 96px;
+    margin-bottom: 30px;
+
+    color: #536773;
+}
+
+.sign-in-field {
+    width: 200px;
+    padding-left: 30px;
+    padding-right: 30px;
+    background: #EFEFEF;
+    font-family: inriaSerif;
+}
+
+input {
+    height: 47px;
+    border: none;
+    border-radius: 15px;
+    text-align: center;
+}
+
+.fun-font, input[type="text"], input[type="submit"] {
+    font-style: normal;
+    font-weight: normal;
+    font-size: 20px;
+    line-height: 29px;
+}
+
+.fun-font, input[type="text"] {
+    color: #536773;
+}
+
+.fun-font {
+    font-family: indieFlower;
+}
+
+input[type="submit"] {
+    width: 160px;
+    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
+    background: #536773;
+    color: #EFEFEF;
+    margin-top: 15px;
+}
+
+input[type="text"] {
+    margin-top: 30px;
+}

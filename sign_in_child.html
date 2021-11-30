@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+    <head> 
+        <link rel="stylesheet" href="styles.css">
+    </head>
+<body>
+
+<h1 class=kira>KIRA</h1>
+<div style="text-align: center;">
+    <form action="/action_page.php">
+        <!-- <label for="username" class=fun-font>Username:</label><br> -->
+        <input type="text" id="username" name="username" class=sign-in-field  placeholder="Username"><br>
+        <!-- <label for="password" class=fun-font>Password:</label><br> -->
+        <input type="text" id="password" name="password" class=sign-in-field  placeholder="Password"><br><br>
+        <input type="submit" value="Submit">
+      </form> 
+</div>
+<div>
+    <button onclick = "signInAsParent()">Sign In As Parent</button>
+</div>
+<div>
+    <button onclick = "signInAsChild()">Sign In As Child</button>
+</div>
+
+</body>
+</html>
+<script>
+    class Child{
+        constructor(n, p) {
+            this.username = n;
+            this.password = p;
+        }
+    }
+    function signInAsParent() {
+        
+        console.log(document.getElementById("username").value);
+        window.localStorage.setItem("parent_username", document.getElementById("username").value);
+        window.localStorage.setItem("parrent_password", document.getElementById("password").value);
+        window.location.href = "home_parent.html";
+
+    }
+    function signInAsChild() {
+        let children = JSON.parse(window.localStorage.getItem( "children"));
+        let username = document.getElementById("username").value;
+            let password = document.getElementById("password").value;
+            let c = new Child(username, password);
+        if(children == null)
+        {
+            children = [];
+            
+            children.push(c);
+        }
+        else
+        {
+            children.push(c);
+        }
+        window.localStorage.setItem("children", JSON.stringify(children));
+        window.localStorage.setItem("current_child", username);
+        window.location.href = "home_child.html";
+    }
+</script>

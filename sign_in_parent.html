@@ -1,23 +1,28 @@
 <!DOCTYPE html>
 <html>
+    <head> 
+        <link rel="stylesheet" href="styles.css">
+    </head>
 <body>
 
-<h1>Kira</h1>
-<div>
-    <form action="/action_page.php">
-        <label for="username">Username:</label><br>
-        <input type="text" id="username" name="username" ><br>
-        <label for="password">Password:</label><br>
-        <input type="text" id="password" name="username" ><br><br>
-        <input type="submit" value="Submit">
+<h1 class=kira>KIRA</h1>
+<div style="text-align: center;" class=parent-font>
+    <form action="home_parent.html">
+        <!-- <label for="username" class=fun-font>Username:</label><br> -->
+        <input type="text" id="username" name="username" class=sign-in-field  placeholder="username"><br>
+        <!-- <label for="password" class=fun-font>Password:</label><br> -->
+        <input type="text" id="password" name="password" class=sign-in-field  placeholder="password"><br><br><br><br>
+        <input type="submit" onclick = "loginParent()" value="Login" class=sign-in-field>
+        <br>
+        <input type="submit" onclick = "loginParent()" value="Signup" class=sign-in-field>
       </form> 
 </div>
-<div>
+<!-- <div>
     <button onclick = "signInAsParent()">Sign In As Parent</button>
 </div>
 <div>
     <button onclick = "signInAsChild()">Sign In As Child</button>
-</div>
+</div> -->
 
 </body>
 </html>
@@ -28,14 +33,19 @@
             this.password = p;
         }
     }
-    function signInAsParent() {
+    function loginParent() {
         
         console.log(document.getElementById("username").value);
         window.localStorage.setItem("parent_username", document.getElementById("username").value);
         window.localStorage.setItem("parrent_password", document.getElementById("password").value);
-        window.location.href = "home_parent.html";
+        //window.location.href = "home_parent.html";
 
     }
+
+    function signupParent() {
+        
+    }
+    
     function signInAsChild() {
         let children = JSON.parse(window.localStorage.getItem( "children"));
         let username = document.getElementById("username").value;
