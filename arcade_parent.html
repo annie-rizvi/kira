@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<style>
+    div.addReward{
+        visibility: hidden;
+    }
+</style>
+<body onload = "welcome()">
+<style>
+    div.addTask{
+        visibility: hidden;
+    }
+    div.addSched{
+        visibility: hidden;
+    }
+</style>
+<h1>Kira</h1>
+<div>
+    <div>
+        <h2>Arcade</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Reward</th>
+                    <th>Points</th>
+                    <th>Icon</th>
+                  </tr>
+            </thead>
+            <tbody id="arcade_body">
+            </tbody>
+          </table>
+    </div>
+    <div>
+        <button onClick= "createNewReward()">Create Reward</button>
+    </div>
+    <div class = "addReward">
+        <form action="/action_page.php">
+            <label for="name">Name:</label><br>
+            <input type="text" id="name" name="name" ><br>
+            <label for="points">Points:</label><br>
+            <input type="number" id="points" name="points" ><br>
+            <label for="icon">Pick an icon:</label>
+            <select name="icon" id="icon">
+                <option value="fodd">Food</option>
+                <option value="trip">Trip</option>
+                <option value="game">Game</option>
+                <option value="gift">Gift</option>
+            </select>
+          </form>
+          <button onClick = "submitNewReward()">Submit</button> 
+    
+    </div>
+    <div>
+        <button onclick="clearStorage()">Clear</button>
+    </div>
+    
+</div>
+
+</body>
+</html>
+
+<script>
+    class Reward{
+        constructor(n, p, i) {
+            this.name = n;
+            this.points = p;
+            this.icon = i;
+        }
+    }
+
+    function welcome() {
+        const table = document.getElementById("arcade_body");
+        let rewards = JSON.parse(window.localStorage.getItem("rewards"));
+        if(rewards != null)
+        {
+            let length = rewards.length;
+            for(let i=0; i< length; i++)
+            {
+                let reward = rewards[i];
+                let row = table.insertRow();
+                let name = row.insertCell(0);
+                name.innerHTML = reward.name;
+                let points = row.insertCell(1);
+                points.innerHTML = reward.points;
+                let icon = row.insertCell(2);
+                icon.innerHTML = reward.icon;
+            }
+        }
+    }
+    function createNewReward() {
+        document.getElementsByClassName("addReward")[0].style.visibility = "visible";
+    }
+
+    function submitNewReward() {
+        let n = document.getElementById("name").value;
+        let p = document.getElementById("points").value;
+        let i = document.getElementById("icon").value;
+        const t = new Reward(n,p,i);
+        let all_rewards = JSON.parse(window.localStorage.getItem("rewards"));
+        if(all_rewards == null){
+            all_rewards = []
+            let new_length = all_rewards.push(t);
+        }
+        else {
+            let new_length = all_rewards.push(t);
+        }
+        window.localStorage.setItem("rewards", JSON.stringify(all_rewards));
+        const table = document.getElementById("arcade_body");
+        let row = table.insertRow();
+        let name = row.insertCell(0);
+        name.innerHTML = n;
+        let points = row.insertCell(1);
+        points.innerHTML = p;
+        let icon = row.insertCell(2);
+        icon.innerHTML = i;
+        document.getElementsByClassName("addReward")[0].style.visibility = "hidden";
+    }
+</script>
