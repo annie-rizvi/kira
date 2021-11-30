@@ -9,21 +9,37 @@
     src: url(fonts/InriaSerif-Regular.ttf);
 }
 
-.kira {
+body, h1, h2, input {
+    color: #536773;
     text-align: center;
-
     font-family: inriaSerif;
     font-style: normal;
     font-weight: normal;
+}
+
+.kids {
+    background: #8FC7E7;
+}
+
+h2 {
+    font-size: 30px;
+    line-height: 36px;
+    margin-top: 50px;
+}
+
+ol {
+    margin: 0;
+    padding-inline-start: 30px;
+}
+
+.kira {
     font-size: 80px;
     line-height: 96px;
     margin-bottom: 30px;
-
-    color: #536773;
 }
 
 .sign-in-field {
-    width: 200px;
+    width: 156px;
     padding-left: 30px;
     padding-right: 30px;
     background: #EFEFEF;
@@ -44,10 +60,6 @@ input {
     line-height: 29px;
 }
 
-.fun-font, input[type="text"] {
-    color: #536773;
-}
-
 .fun-font {
     font-family: indieFlower;
 }
@@ -62,4 +74,16 @@ input[type="submit"] {
 
 input[type="text"] {
     margin-top: 30px;
+}
+
+.qr, .steps {
+    width: 200px;
+    margin: 30px;
+}
+
+.steps {
+    text-align: left;
+    margin: auto;
+    font-size: 20px;
+    line-height: 30px;
 }
