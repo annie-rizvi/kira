@@ -4,6 +4,7 @@
 
 <h1>Kira</h1>
 <div>
+    <h2 id = "total_points"></h2>
     <div>
         <h2>Weekly Schedule</h2>
         <table onchange = changeProgress()>
@@ -19,6 +20,9 @@
             <tbody id="schedule_body">
             </tbody>
           </table>
+    </div>
+    <div>
+        <button onclick="clearStorage()">Clear</button>
     </div>
     
 </div>
@@ -41,11 +45,30 @@
             this.progress = false;
         }
     }
-    
+
+    class Child{
+        constructor(n, p, points) {
+            this.username = n;
+            this.password = p;
+            this.points = points;
+        }
+    }
+    var total_points=0;
+    let child_name = window.localStorage.getItem("current_child");
     function welcome() {
-        let child_name = window.localStorage.getItem("current_child");
-        let schedule = JSON.parse(window.localStorage.getItem("schedule"));
         
+        let schedule = JSON.parse(window.localStorage.getItem("schedule"));
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        console.log(children);
+        for(let i=0; i<children.length; i++)
+        {
+            if(child_name == children[i].username)
+            {
+                total_points = Number(children[i].points);
+            }
+        }
+        console.log(total_points);
+        document.getElementById("total_points").innerHTML = "You have " + total_points + " Points!";
         let tasks = JSON.parse(window.localStorage.getItem("tasks"));
         console.log(child_name);
         console.log(schedule);
@@ -101,7 +124,6 @@
             let schedule = JSON.parse(window.localStorage.getItem("schedule"));
             let length = schedule.length;
             const table = document.getElementById("schedule_body");
-            console.log(table.childNodes);
             for(let i=0; i< table.childNodes.length-1; i++)
             {
                 for(let j=0; j< length; j++)
@@ -111,6 +133,15 @@
                         schedule[j].progress = document.getElementById(String(i)+"checkbox").checked;
                     }
                 }
+                if(document.getElementById(String(i)+"checkbox").checked && table.childNodes[i+1].childNodes[3].innerHTML == "Not Completed")
+                {
+                    total_points += Number(table.childNodes[i+1].childNodes[2].innerHTML);
+
+                }
+                else if(!document.getElementById(String(i)+"checkbox").checked && table.childNodes[i+1].childNodes[3].innerHTML == "Completed")
+                {
+                    total_points -= Number(table.childNodes[i+1].childNodes[2].innerHTML);
+                }
                 if(document.getElementById(String(i)+"checkbox").checked)
                 {
                     table.childNodes[i+1].childNodes[3].innerHTML = "Completed";
@@ -119,24 +150,28 @@
                 {
                     table.childNodes[i+1].childNodes[3].innerHTML = "Not Completed";
                 }
+                
                 window.localStorage.setItem("schedule", JSON.stringify(schedule));
+                let children = JSON.parse(window.localStorage.getItem("children"));
+                console.log(children);
+                console.log(child_name);
+                document.getElementById("total_points").innerHTML = "You have " + total_points + " Points!";
+                for(let i=0; i<children.length; i++)
+                {
+                    if(child_name == children[i].username)
+                    {
+                        
+                        children[i].points = String(total_points);
+                        console.log("changed");
+                    }
+                }
+                console.log(children);
+                window.localStorage.setItem("children", JSON.stringify(children));
+                console.log(JSON.parse(window.localStorage.getItem("children")));
 
             }
-            /*
-            for()
-            schedule[i].progress = !schedule[i].progress;
-            window.localStorage.setItem("schedule", JSON.stringify(schedule));
-            const table = document.getElementById("schedule_body");
-            if(schedule[i].progress)
-            {
-                table.childNodes[1].childNodes[3].innerHTML = "Completed";
-            }
-            else
-            {
-                table.childNodes[1].childNodes[3].innerHTML = "Not Completed";
-            }*/
-            
-                
-        
+        }
+        function clearStorage() {
+            window.localStorage.removeItem("children");
         }
 </script> 
