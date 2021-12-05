@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="phone.css">
+    <link rel="stylesheet" href="add_task.css">
+</head>
+
+<body>
+    
+<div class=phone>
+    <h2>Add Reward</h2>
+    
+    <button onclick="location.href='parent_tasks.html'" class=back><img src="images/back.png"></button> 
+    <button onClick = "submit()" class=submit><img src="images/checkmark.png"></button> 
+
+    <div class = "addTask">
+        <form>
+            <label for="name">reward title</label><br>
+            <input type="text" id="name" name="name" ><br><br>
+
+            <label for="points">points cost</label><br>
+            <input type="number" id="points" name="points" ><br><br>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
+<script src="classes.js"></script>
+<script>
+
+
+    console.log("Here i iam")
+    let username = window.localStorage.getItem("parent_username");
+
+    function submit() {
+        let n = document.getElementById("name").value;
+        let p = document.getElementById("points").value;
+
+        let tasks = JSON.parse(window.localStorage.getItem("rewards"));
+        console.log(tasks);
+
+        if(tasks == null) {
+            tasks = [];
+        }
+
+                console.log("added reward");
+                const task = new Reward(n, p);
+                tasks.push(task);
+
+        window.localStorage.setItem("rewards", JSON.stringify(tasks));
+        window.location.href = "rewards.html";
+    }
+</script>

@@ -21,6 +21,9 @@
 <div>
     <button onclick = "signInAsChild()">Sign In As Child</button>
 </div>
+<div>
+    <button onclick = "removeChildren()">Remove Children</button>
+</div>
 
 </body>
 </html>
@@ -58,5 +61,8 @@
         window.localStorage.setItem("children", JSON.stringify(children));
         window.localStorage.setItem("current_child", username);
         window.location.href = "dashboard_child.html";
+    }
+    function removeChildren() {
+        window.localStorage.removeItem("children")
     }
 </script>

@@ -27,13 +27,26 @@
         </ul>
     </div>
 <div class=phone>
-    <h2>Rewards</h2>
+    <h2>Task Schedule</h2>
+    <div class=dropdown>
+        <select name="child" id="child" onchange="populateTasks()">
+        </select>
+        <img src="images/arrow.png" class=dropdown-arrow>
+    </div>
+    <br>
+
+    <label class="switch">
+        <input type="checkbox">
+        <span class="slider"></span>
+        <span class=slider-label-left>current tasks</span>
+        <span class=slider-label-right>pending approval</span>
+    </label>
     
     <div class=task-list>
         <table id=parent-task-list>
         </table>
     </div>
-    <button class=add-button onclick="location.href='add_reward.html'">+</button>
+    <button class=add-button onclick="location.href='add_task.html'">+</button>
 </div>
 </body>
 </html>
@@ -42,20 +55,38 @@
 <script>
 
     function welcome() {
+        var y = document.getElementById("child");
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        if(children != null)
+        {
+            let length = children.length;
+            for(let i=0; i< length; i++)
+            {
+                child = children[i];
+                var opt = document.createElement("option");
+                opt.text = child.username;
+                opt.value = child.username;
+                y.add(opt);
+            }
+        }
+
         populateTasks();
     }
 
     function populateTasks() {
         const table = document.getElementById("parent-task-list");
         table.innerHTML = "";
-        let tasks = JSON.parse(window.localStorage.getItem("rewards"));
+        let child = document.getElementById("child");
+        let tasks = JSON.parse(window.localStorage.getItem("tasks"));
         if(tasks != null)
         {
             let length = tasks.length;
             for(let i=0; i< length; i++)
             {
                 let task = tasks[i];
-
+                if (task.child != child.value) {
+                    continue;
+                }
                 let row = table.insertRow();
                 row.classList.add("task");
                 let name = row.insertCell(0);

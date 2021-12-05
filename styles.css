@@ -5,8 +5,7 @@
     src: url(fonts/InriaSerif-Regular.ttf);
 }
 
-
-body, h1, h2, input {
+body, h1, h2, input, select {
     color: #536773;
     text-align: center;
     font-family: inriaSerif;
@@ -25,58 +24,6 @@ ol {
     padding-inline-start: 30px;
 }
 
-.kira {
-    font-size: 80px;
-    line-height: 96px;
-    margin-bottom: 30px;
-}
-
-.sign-in-field {
-    width: 156px;
-    padding-left: 30px;
-    padding-right: 30px;
-    background: #EFEFEF;
-    font-family: inriaSerif;
-}
-
-input {
-    height: 47px;
-    border: none;
-    border-radius: 15px;
-    text-align: center;
-}
-
-.fun-font, input[type="text"], input[type="submit"] {
-    font-style: normal;
-    font-weight: normal;
-    font-size: 20px;
-    line-height: 29px;
-}
-
 .fun-font {
     font-family: nanum;
-}
-
-input[type="submit"] {
-    width: 160px;
-    filter: drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25));
-    background: #536773;
-    color: #EFEFEF;
-    margin-top: 15px;
-}
-
-input[type="text"] {
-    margin-top: 30px;
-}
-
-.qr, .steps {
-    width: 200px;
-    margin: 30px;
-}
-
-.steps {
-    text-align: left;
-    margin: auto;
-    font-size: 20px;
-    line-height: 30px;
 }

@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kira Kids</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="./assets/balloon.css">
+</head>
+
+
+<style>
+[v-cloak] { display: none; }
+
+@font-face {
+    
+    font-family: inriaSerif;
+    src: url(./assets/InriaSerif-Regular.ttf);
+}
+@font-face {
+    font-family: nanum;
+    src: url(./assets/NanumPenScript-Regular.ttf);
+}
+
+
+#app {
+    width: 100ww;
+    background-color: #8FC7E7;
+    
+    /* background-color: #ccc; */
+    height: 100vh;
+}
+.phone {
+    border: 3px solid black;
+    width: 400px;
+    height: 700px;
+    border-radius: 50px;
+    margin: 0px auto;
+    /* background-color: #8FC7E7; */
+}
+
+.kid-font {
+    color: #536773;
+    text-align: center;
+    font-family: nanum;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 35px;
+}
+</style>
+
+<body>
+
+    <div id="app" v-cloak>
+        <br>
+        <div class="phone">
+            <br />
+            <div v-if="page == 'login'">
+                <center>
+                    <img src="assets/logo.svg"  class="logo" />
+                </center>
+                <br />
+                <br />
+    
+                <div class="px-8">
+                    <input 
+                        class="shadow appearance-none border rounded-2xl w-full py-2 px-3 text-gray-700 leading-tight
+                        focus:outline-none focus:shadow-outline kid-font" 
+                        id="username" type="text" placeholder="Username" v-model="username" />
+    
+                    <br />
+                    <br />
+                    <br />
+                    <br />
+                    <p class="kid-font" style="color: black;">
+                        Scan bardcode to log in
+                    </p>
+                    <br />
+    
+                    <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-full rounded-2xl"
+                        @click="login()"
+                    >
+                        Scan
+                    </button>
+            
+                </div>
+            </div>
+
+            <div v-if="page == 'options'">
+                <p class="kid-font" style="color: black;">
+                    <small>
+                        Hi {{username}}!
+                    </small>
+                </p>
+                <p class="kid-font" style="color: white; font-size: 60px; margin-top: -20px;">
+                    {{points}} points
+                </p>
+                <div class="p-4">
+                    <center>
+                        <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-32 h-32 m-4 rounded-2xl kid-font"
+                        @click="change_page('tasks')"
+                        >
+                            Tasks
+                        </button>
+                        <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-32 h-32 m-4 rounded-2xl kid-font"
+                        @click="change_page('rewards')"
+                        >
+                            Rewards
+                        </button>
+                        <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-32 h-32 m-4 rounded-2xl kid-font"
+                        @click="change_page('leaderboard')"
+                        >
+                            Rankings
+                        </button>
+                        <button class="bg-white hover:bg-gray-100 text-gray-800 font-semibold py-2 px-4 border border-gray-400 rounded shadow w-32 h-32 m-4 rounded-2xl kid-font"
+                        @click="change_page('profile')"
+                        >
+                            Profile
+                        </button>
+                    </center>
+
+                    <br />
+                    <button class="kid-font bg-gray-500 hover:bg-gray-400 text-white font-semibold py-2 px-4 border border-gray-400 rounded shadow w-full rounded-2xl kid-text"
+                    @click="logout()" style="color: white;"
+                    >
+                        Logout
+                    </button>
+
+                </div>
+            </div>
+            <div v-if="page != 'login' && page != 'options'">
+                <div>
+                    <span class="kid-font px-4" style="color: white; font-size: 45px; align-content: center;">
+                        <i class="fa fa-angle-left" aria-hidden="true" @click="change_page('options')"></i>
+                        
+                        &nbsp;
+                        &nbsp;
+                        {{page}}
+                    </span>
+
+                    <div v-if="page == 'tasks'">
+
+
+                        <div class="flex items-center justify-center mb-4" v-if="!show_pending">
+                            <button
+                              class="bg-transparent border-l border-t border-b border-gray-200 bg-gray-500 text-white  font-bold  text-xs px-4 py-2 rounded-l outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 kid-font"
+                              type="button" style="font-size: 25px; color: white;">
+                                Current tasks
+                            </button>
+                            <button
+                              class="text-white bg-transparent border border-solid border-gray-200 hover:bg-gray-500 hover:text-white  font-bold  text-xs px-4 py-2 outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 kid-font"
+                              type="button" style="font-size: 25px;" @click="show_pending = true">
+                                Pending approval
+                            </button>
+                          </div>
+                          
+                          <div class="flex items-center justify-center mb-4" v-if="show_pending">
+                            <button
+                              class="text-white bg-transparent border-l border-t border-b border-gray-200 hover:bg-gray-500 hover:text-white  font-bold  text-xs px-4 py-2 rounded-l outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 kid-font"
+                              type="button" style="font-size: 25px;" @click="show_pending = false">
+                                Current tasks
+                            </button>
+                            <button
+                              class="text-white bg-transparent border border-solid border-gray-200 bg-gray-500 text-white  font-bold  text-xs px-4 py-2 outline-none focus:outline-none mb-1 ease-linear transition-all duration-150 kid-font"
+                              type="button" style="font-size: 25px; color: white;">
+                                Pending approval
+                            </button>
+                          </div>
+
+
+                        <div v-for="task in tasks">
+                            <div v-if="task.pending == show_pending && task.pending == false" 
+                            class=" bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow m-4 rounded-2xl kid-font"
+                            data-balloon-pos="up" :aria-label="`Send task '${task.name}' for approval!`" @click="update_task(task)"
+                            >
+                                {{task.name}}
+
+                                <span style="float: right;">
+                                    {{task.points}}
+                                </span>
+                            </div>
+
+
+                            <div v-if="task.pending == show_pending && task.pending == true" 
+                            class=" bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow m-4 rounded-2xl kid-font"
+                            >
+                                {{task.name}}
+
+                                <span style="float: right;">
+                                    {{task.points}}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-if="page == 'rewards'">
+                        <p class="kid-font" style="margin-bottom: -20px;">
+                            You may claim:
+                        </p>
+                        <div v-for="reward in rewards">
+                            <div v-if="points >= reward.points"
+                            class=" bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow m-4 rounded-2xl kid-font"
+                            data-balloon-pos="up" :aria-label="`Claim reward '${reward.name}'!`" @click="update_reward(reward)"
+                            >
+                                {{reward.name}}
+
+                                <span style="float: right;">
+                                    {{reward.points}}
+                                </span>
+                            </div>    
+
+                        </div>
+
+                        <br />
+                        <p class="kid-font"  style="margin-bottom: -20px;">
+                            You need more points for:
+                        </p>
+
+                        <div v-for="reward in rewards">
+                            <div v-if="points < reward.points"
+                                class=" bg-red-100 hover:bg-gray-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow m-4 rounded-2xl kid-font"
+                                >
+                                {{reward.name}}
+
+                                <span style="float: right;">
+                                    {{reward.points}}
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="bg-white" style="position: absolute; top: 586px; width: 394px; border-radius: 50px;">
+                            <p class="kid-font">
+                                Available Points
+                            </p>
+                            <h1 class="kid-font" style="font-size: 54px;">
+                                {{points}}
+                            </h1>
+
+                        </div>
+
+                    </div>
+                    <div v-if="page == 'leaderboard'">
+                        <p class="kid-font" style="margin-bottom: -20px;">
+                            Superior children at top:
+                        </p>
+                        <div v-for="kid in kids">
+                            <div
+                            class=" bg-white hover:bg-gray-100 text-gray-800 font-semibold px-4 border border-gray-400 rounded shadow m-4 rounded-2xl kid-font"
+                            >
+                                {{kid.username}}
+
+                                <span style="float: right;">
+                                    {{kid.points}}
+                                </span>
+                            </div>    
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            mounted() {
+                arr = this.kids
+                arr.sort(function(a, b) {
+                    return parseFloat(b.points) - parseFloat(a.points);
+                });
+            },
+            data() {
+                return {
+                    username: "",
+                    button_classes: "",
+                    page: "login",
+                    points: 0,
+                    tasks: [
+                        {
+                            pending: true,
+                            name: "clean room",
+                            points: 30
+                        },
+                        {
+                            pending: false,
+                            name: "read book",
+                            points: 50
+                        },
+                        {
+                            pending: false,
+                            name: "wash dishes",
+                            points: 20
+                        },
+                        {
+                            pending: false,
+                            name: "brush teeth",
+                            points: 5
+                        },
+                        {
+                            pending: true,
+                            name: "tidy legos",
+                            points: 15
+                        }
+                    ],
+                    rewards: [
+                        {
+                            name: "'Free' lego set",
+                            points: 60
+                        },
+                        {
+                            name: "A trip to disney land",
+                            points: 250
+                        },
+                        {
+                            name: "A shiny new bike",
+                            points: 1000000
+                        }
+                    ],
+                    kids: [
+                        {
+                            username: "blue",
+                            points: 40
+                        },
+                        {
+                            username: "blue_girl",
+                            points: 60
+                        },
+                        {
+                            username: "red",
+                            points: 41
+                        },
+                        {
+                            username: "red_girl",
+                            points: 53535
+                        }
+                    ],
+                    sorted_kids: [],
+                    show_pending: false
+                    // username: "",
+                    // button_classes: "",
+                    // page: "login"
+                }
+            },
+            methods: {
+                save_child() {
+                    console.log('Calling save', children)
+
+                    var children = JSON.parse(window.localStorage.getItem( "children"));
+
+                    var child = {
+                        username: this.username,
+                        password: "lol",
+                        points: this.points
+                    }
+
+                    if(children == null) {
+                        children = []
+                    }
+
+                    var found_child = {}
+                    var all_kids = []
+                    for(var i = 0; i < children.length; i++) {
+                        var new_kid = children[i]
+                        if(children[i].username == this.username) {
+                            new_kid.points = this.points 
+                        }
+                        all_kids.push(new_kid)
+                    }
+
+                    console.log('Saving poorly behaved child', children)
+                    arr.push(child)
+                    window.localStorage.setItem("children", JSON.stringify(all_kids))
+
+                },
+                login() {
+                    if(this.username != "") {
+                        // Find Children
+                        var children = JSON.parse(window.localStorage.getItem( "children"));
+                        var arr = []
+                        if(!children) {
+                            console.log("Creating children list")
+                        } else {
+                            arr = children;
+                        }
+
+                        var child = {
+                            username: this.username,
+                            password: "lol",
+                            points: 0
+                        }
+
+                        if(children == null) {
+                            children = []
+                        }
+
+                        var exists = false
+                        var found_child = {}
+                        for(var i = 0; i < children.length; i++) {
+                            if(children[i].username == this.username) {
+                                exists = true;
+                                found_child = children[i] 
+                                break;
+                            }
+                        }
+
+                        if(!exists) {
+                            console.log('creating child', children)
+                            arr.push(child)
+                            window.localStorage.setItem("children", JSON.stringify(children))
+                        } else {
+                            console.log('child found', children)
+                            this.points = found_child.points;
+                        }
+
+
+
+                        var tasks = JSON.parse(window.localStorage.getItem("tasks"));
+                        var filtered_tasks = []
+
+                        if(tasks == null) {
+                            tasks = []
+                        }
+
+                        for(var i = 0; i < tasks.length; i++) {
+                            if(tasks[i].child  == this.username) {
+                                filtered_tasks.push(tasks[i])
+                            }
+                        }
+
+                        console.log('tasks', tasks, filtered_tasks)
+
+                        this.tasks = filtered_tasks;
+
+
+
+
+
+
+
+
+                        var rewards = JSON.parse(window.localStorage.getItem("rewards"));
+                        var filtered_rewards = []
+
+                        if(rewards == null) {
+                            rewards = []
+                        }
+
+
+
+                        this.rewards  = rewards;
+
+
+
+                        this.page = 'options'
+                    }
+                },
+                logout() {
+                    this.username = ''; 
+                    this.page = 'login';
+                },
+                change_page (s) {
+                    this.page = s;
+                },
+                update_task(task) {
+                    console.log(this.username, 'wants to update', task)
+
+                    var tasks = JSON.parse(window.localStorage.getItem("tasks"));
+                    var before = []
+
+
+                    for(var i = 0; i < tasks.length; i++) {
+                        var old_task = tasks[i]
+
+                        if(old_task.name == task.name) {
+                            console.log("Updating task")
+                            this.points += parseInt(old_task.points)
+                            old_task.pending = true;
+                        }
+
+                        before.push(old_task)
+                    }
+
+                    window.localStorage.setItem("tasks", JSON.stringify(before))
+                    this.save_child()
+                    this.tasks = before
+                },
+                update_reward(reward) {
+                    console.log(this.username, 'wants to buy', reward)
+                }
+            }
+        })
+
+    </script>
+
+</body>
+</html>

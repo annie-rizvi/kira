@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="phone.css">
+    <link rel="stylesheet" href="add_task.css">
+</head>
+
+<body onload = "welcome()">
+    
+<div class=phone>
+    <h2>Add Task</h2>
+    
+    <button onclick="location.href='parent_tasks.html'" class=back><img src="images/back.png"></button> 
+    <button onClick = "submit()" class=submit><img src="images/checkmark.png"></button> 
+
+    <div class = "addTask">
+        <form>
+            <label for="name">task title</label><br>
+            <input type="text" id="name" name="name" ><br><br>
+
+            <div id=children>
+                <label>assign child</label><br><br>
+            </div><br>
+
+            <label for="points">points rewarded</label><br>
+            <input type="number" id="points" name="points" ><br><br>
+
+            <label for="description">description</label><br>
+            <input type="text" id="description" name="description" ><br><br>
+            </select>
+        </form>
+
+    </div>
+</div>
+</body>
+</html>
+<script src="classes.js"></script>
+<script>
+
+    let username = window.localStorage.getItem("parent_username");
+
+    function welcome() {
+        var y = document.getElementById("children");
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        if(children != null)
+        {
+            let length = children.length;
+            for(let i=0; i< length; i++)
+            {
+                child = children[i];
+
+                var label = document.createElement("label");
+                label.classList.add("child")
+
+                var opt = document.createElement("input");
+                opt.setAttribute("type", "checkbox");
+                opt.name = child.username;
+                opt.classList.add("child-box");
+                label.appendChild(opt);
+
+                var pic = document.createElement("img");
+                pic.classList.add("account")
+                label.appendChild(pic);
+                
+                var br = document.createElement("br");
+                label.appendChild(br);
+                
+                var name = document.createElement("span");
+                name.innerHTML = child.username
+                name.classList.add("name")
+                label.appendChild(name);
+
+                y.appendChild(label);
+            }
+        }
+    }
+
+    function submit() {
+        let n = document.getElementById("name").value;
+        let d = document.getElementById("description").value;
+        let p = document.getElementById("points").value;
+
+        let tasks = JSON.parse(window.localStorage.getItem("tasks"));
+                console.log("here");
+
+        if(tasks == null) {
+            tasks = [];
+        }
+
+        let children = Array.from(document.getElementsByClassName("child-box") );
+        children.forEach(function(v) {
+            if (v.checked && n != "" && p != "") {
+                console.log("added child");
+                console.log(n, d, p, v.name)
+                var task = {
+                    name: n,
+                    description: d,
+                    points: p,
+                    child: v.name,
+                    pending: false
+                }
+                tasks.push(task);
+            }
+        } );
+
+        window.localStorage.setItem("tasks", JSON.stringify(tasks));
+        window.location.href = "parent_tasks.html";
+    }
+</script>

@@ -42,6 +42,9 @@
         <input type="text" id="description" name="description" ><br><br>
         <label for="points">Points:</label><br>
         <input type="number" id="points" name="points" ><br>
+        <label for="child">Assign a child:</label>
+        <select name="child" id="child">
+        </select>
       </form>
       <button onClick = "submitnewTask()">Submit</button> 
 
@@ -68,30 +71,14 @@
     <label for="tasks">Choose a task:</label>
     <select name="task" id="task">
     </select>
-    <label for="child">Assign a child:</label>
-    <select name="child" id="child">
-    </select>
     <button onclick = "submitTaskToSched()">Add Task To Schedule</button> 
 
 </div>
 
 </body>
 </html>
+<script src="classes.js"></script>
 <script>
-    class Task{
-        constructor(n, d, p) {
-            this.name = n;
-            this.description = d;
-            this.points = p;
-        }
-    }
-    class Child{
-        constructor(n, p) {
-            this.username = n;
-            this.password = p;
-            this.points = 0;
-        }
-    }
     class ScheduleItem{
         constructor(task, child) {
             this.task = task;
@@ -112,6 +99,21 @@
             //window.localStorage.removeItem("schedule");
         }
         document.getElementById("hello").innerHTML = "Hello " + username;
+
+        var y = document.getElementById("child");
+        let children = JSON.parse(window.localStorage.getItem("children"));
+        if(children != null)
+        {
+            let length = children.length;
+            for(let i=0; i< length; i++)
+            {
+                child = children[i];
+                var opt = document.createElement("option");
+                opt.text = child.username;
+                opt.value = child.username;
+                y.add(opt);
+            }
+        }
 
         const table = document.getElementById("task_body");
         let tasks = JSON.parse(window.localStorage.getItem("tasks"));
@@ -251,7 +253,8 @@
         let n = document.getElementById("name").value;
         let d = document.getElementById("description").value;
         let p = document.getElementById("points").value;
-        const t = new Task(n,d,p);
+        let c = document.getElementById("child").value;
+        const t = new Task(n,d,p,c);
         let all_tasks = JSON.parse(window.localStorage.getItem("tasks"));
         if(all_tasks == null){
             all_tasks = []

@@ -1,0 +1,11 @@
+.qr, .steps {
+    width: 200px;
+    margin: 30px;
+}
+
+.steps {
+    text-align: left;
+    margin: auto;
+    font-size: 20px;
+    line-height: 30px;
+}

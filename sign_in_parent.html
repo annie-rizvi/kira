@@ -2,9 +2,30 @@
 <html>
     <head> 
         <link rel="stylesheet" href="styles.css">
+        <link rel="stylesheet" href="sign_in_parent.css">
+        <link rel="stylesheet" href="phone.css">
     </head>
 <body>
-
+    <div style="float: left;">
+        <ul>
+            <li>
+                <a href="./rewards.html">Rewards</a>
+            </li>
+            <li>
+                <a href="./parent_tasks.html">Tasks</a>
+            </li>
+            <li>
+                <a href="./qr.html">QR Code</a>
+            </li>
+            <li>
+                <a href="./sign_in_parent.html">Login</a>
+            </li>
+            <li>
+                <a href="./index.html">Kira Kids</a>
+            </li>
+        </ul>
+    </div>
+<div class=phone>
 <h1 class=kira>KIRA</h1>
 <div style="text-align: center;" class=parent-font>
     <form action="home_parent.html">
@@ -23,7 +44,7 @@
 <div>
     <button onclick = "signInAsChild()">Sign In As Child</button>
 </div> -->
-
+</div>
 </body>
 </html>
 <script>
@@ -38,7 +59,7 @@
         console.log(document.getElementById("username").value);
         window.localStorage.setItem("parent_username", document.getElementById("username").value);
         window.localStorage.setItem("parrent_password", document.getElementById("password").value);
-        //window.location.href = "home_parent.html";
+        window.location.href = "parent_tasks.html";
 
     }
 

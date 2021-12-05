@@ -1,0 +1,95 @@
+body {
+    text-align: left;
+    color: black;
+    
+    font-size: 15px;
+    line-height: 18px;
+}
+
+.addTask {
+    padding-left: 18px;
+    padding-right: 18px;
+}
+
+input {
+    text-align: left;
+}
+
+input[type=checkbox] {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.account {
+    content:url("images/account_grey.svg");
+}
+
+input[type=checkbox]:checked ~ img {
+    content:url("images/account.svg");
+}
+
+input[type=checkbox]:checked ~ span {
+    color: #536773;
+}
+
+input[type=text], input[type=number] {
+    background: #EFEFEF;
+    border-radius: 50px;
+    border: none;
+    padding-left: 14px;
+    height: 26px;
+}
+
+#name, #description {
+    width: 270px;
+}
+
+#points {
+    width: 87px;
+}
+
+#description {
+    height: 77px;
+    border-radius: 15px;
+}
+
+.child {
+    position: relative;
+    height: 58px;
+    width: 70px;
+    display: inline-block;
+}
+
+.account, .name {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, 0%);
+}
+
+.name {
+    color: #c4c4c4;
+    bottom: 0;
+}
+
+.submit {
+    position: absolute;
+    /* display: inline-block; */
+    right: 30px;
+    top: 60px;
+    background-color: transparent;
+    border-style: none;
+    height: 30px;
+    width: 30px
+}
+
+
+.back {
+    position: absolute;
+    left: 30px;
+    top: 55px;
+    background-color: transparent;
+    border-style: none;
+    height: 30px;
+    width: 30px
+}
